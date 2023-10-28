@@ -1,0 +1,70 @@
+\begin{thebibliography}{1}
+\def\selectlanguageifdefined#1{
+\expandafter\ifx\csname date#1\endcsname\relax
+\else\language\csname l@#1\endcsname\fi}
+\ifx\undefined\url\def\url#1{{\small #1}}\else\fi
+\ifx\undefined\BibUrl\def\BibUrl#1{\url{#1}}\else\fi
+\ifx\undefined\BibAnnote\long\def\BibAnnote#1{(#1)}\else\fi
+\ifx\undefined\BibEmph\def\BibEmph#1{\emph{#1}}\else\fi
+
+\bibitem{matrix}
+\selectlanguageifdefined{russian}
+Матрица [Электронный ресурс].
+\newblock Режим доступа: \url{https://terme.ru/termin/matrica.html}
+  (дата обращения: 17.10.2023).
+
+\bibitem{vinograd-matrix}
+\selectlanguageifdefined{russian}
+Умножение матриц [Электронный ресурс].
+\newblock Режим доступа:
+  \url{http://algolib.narod.ru/Math/Matrix.html} (дата обращения:
+  17.10.2023).
+
+\bibitem{book_vinograd}
+\selectlanguageifdefined{russian}
+Головашкин~Д.~Л. Векторные алгоритмы
+  вычислительной линейной алгебры: учеб.
+  пособие.
+\newblock --- Самара: Изд-во Самарского
+  университета, 2019.
+
+\bibitem{book_shtrassen}
+\selectlanguageifdefined{russian}
+Кормен~Т.Х. Алгоритмы: построение и анализ.
+\newblock М: Пер. с анг. Изд-во «Вильямс», 2009.
+\newblock {с.}~893.
+
+\bibitem{model}
+\selectlanguageifdefined{russian}
+М. В. Ульянов Ресурсно-эффективные
+  компьютерные алгоритмы. Разработка и
+  анализ.
+\newblock 2007.
+
+\bibitem{python-lang}
+\selectlanguageifdefined{russian}
+Welcome to Python [Электронный ресурс].
+\newblock Режим доступа: \url{https://www.python.org} (дата
+  обращения: 17.10.2023).
+
+\bibitem{python-lang-time}
+\selectlanguageifdefined{russian}
+time — Time access and conversions [Электронный ресурс].
+\newblock Режим доступа:
+  \url{https://docs.python.org/3/library/time.html#functions} (дата
+  обращения: 17.10.2023).
+
+\bibitem{ubuntu}
+\selectlanguageifdefined{russian}
+Ubuntu 20.04.3 LTS (Focal Fossa) [Электронный ресурс].
+\newblock Режим доступа: \url{https://releases.ubuntu.com/20.04/}
+  (дата обращения: 17.10.2023).
+
+\bibitem{linux}
+\selectlanguageifdefined{russian}
+Linux [Электронный ресурс].
+\newblock Режим доступа:
+  \url{https://www.linux.org/forums/#linux-tutorials.122} (дата
+  обращения: 17.10.2023).
+
+\end{thebibliography}

@@ -1,0 +1,42 @@
+\begin{thebibliography}{1}
+\def\selectlanguageifdefined#1{
+\expandafter\ifx\csname date#1\endcsname\relax
+\else\language\csname l@#1\endcsname\fi}
+\ifx\undefined\url\def\url#1{{\small #1}}\else\fi
+\ifx\undefined\BibUrl\def\BibUrl#1{\url{#1}}\else\fi
+\ifx\undefined\BibAnnote\long\def\BibAnnote#1{(#1)}\else\fi
+\ifx\undefined\BibEmph\def\BibEmph#1{\emph{#1}}\else\fi
+
+\bibitem{levenshtein}
+\selectlanguageifdefined{russian}
+Вычисление редакционного расстояния
+  [Электронный ресурс].
+\newblock Режим доступа: \url{https://habr.com/ru/articles/117063/}
+  (дата обращения: 19.09.2023).
+
+\bibitem{python-lang}
+\selectlanguageifdefined{russian}
+Python [Электронный ресурс].
+\newblock Режим доступа: \url{https://www.python.org} (дата
+  обращения: 19.09.2023).
+
+\bibitem{python-lang-time}
+\selectlanguageifdefined{russian}
+time — Time access and conversions [Электронный ресурс].
+\newblock Режим доступа:
+  \url{https://docs.python.org/3/library/time.html#functions} (дата
+  обращения: 19.09.2023).
+
+\bibitem{ubuntu}
+\selectlanguageifdefined{russian}
+Ubuntu 22.04.3 LTS (Jammy Jellyfish) [Электронный ресурс].
+\newblock Режим доступа: \url{https://releases.ubuntu.com/22.04/}
+  (дата обращения: 19.09.2023).
+
+\bibitem{linux}
+\selectlanguageifdefined{russian}
+Linux [Электронный ресурс].
+\newblock Режим доступа: \url{https://www.linux.org/} (дата
+  обращения: 19.09.2023).
+
+\end{thebibliography}

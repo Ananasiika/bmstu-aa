@@ -1,0 +1,162 @@
+\chapter{Технологическая часть}
+
+В данном разделе будут рассмотрены средства реализации, а также представлены листинги алгоритмов определения расстояния Левенштейна и Дамерау-Левенштейна.
+
+\section{Средства реализации}
+В данной работе для реализации был выбран язык программирования $Python \cite{python-lang}$. В текущей лабораторной работе требуется замерить процессорное время для выполняемой программы, а также построить графики. Все эти инструменты присутствуют в выбранном языке программирования.
+
+Время работы было замерено с помощью функции \textit{process\_time()} из библиотеки $time \cite{python-lang-time}$.
+
+
+\section{Описание используемых типов данных}
+При реализации алгоритмов будут использованы следующие структуры данных:
+
+\begin{itemize}
+	\item две строки типа \textit{str};
+	\item длина строки --- целое число типа \textit{int};
+	\item в матричных реализациях алгоритмов Левенштейна и Дамерау-Левен-\\штейна дополнительно используется матрица, которая является двумерным списком типа \textit{int}. 
+\end{itemize}
+
+
+
+\section{Реализация алгоритмов}
+
+В листингах \ref{lst:lev_rec}-\ref{lst:dam_lev_rec} представлены реализации алгоритмов нахождения расстояния Левенштейна и Дамерау-Левенштейна.
+\begin{center}
+    \captionsetup{justification=raggedright,singlelinecheck=off}
+    \begin{lstlisting}[label=lst:lev_rec,caption=Алгоритм нахождения расстояния Левенштейна (матричный)]
+def levenshtein_matrix(str1, str2):
+	m = len(str1)
+	n = len(str2)
+	matrix = [[0] * (m + 1) for _ in range(n + 1)]
+	for i in range(n + 1):
+		matrix[i][0] = i
+	for j in range(m + 1):
+		matrix[0][j] = j
+	for i in range(1, m + 1):
+		for j in range(1, n + 1):
+			cost = 0 if str1[i - 1] == str2[j - 1] else 1
+			matrix[i][j] = min(matrix[i - 1][j] + 1,         
+			matrix[i][j - 1] + 1,         
+			matrix[i - 1][j - 1] + cost)  
+	return matrix[m][n]
+\end{lstlisting}
+\end{center}
+
+
+\begin{center}
+    \captionsetup{justification=raggedright,singlelinecheck=off}
+    \begin{lstlisting}[label=lst:lev_mat,caption=Алгоритм нахождения расстояния Дамерау-Левенштейна]
+def damerau_levenshtein_matrix(str1, str2):
+	m = len(str1)
+	n = len(str2)
+	matrix = [[0] * (m + 1) for _ in range(n + 1)]
+	for i in range(n + 1):
+		matrix[i][0] = i
+	for j in range(m + 1):
+		matrix[0][j] = j
+	for i in range(1, m + 1):
+		for j in range(1, n + 1):
+			cost = 0 if str1[i - 1] == str2[j - 1] else 1
+			matrix[i][j] = min(matrix[i - 1][j] + 1,         
+			matrix[i][j - 1] + 1,        
+			matrix[i - 1][j - 1] + cost) 
+	if i > 1 and j > 1 and str1[i - 1] == str2[j - 2] and str1[i - 2] == str2[j - 1]:
+		matrix[i][j] = min(matrix[i][j], matrix[i - 2][j - 2] + 1)
+	return matrix[m][n]
+\end{lstlisting}
+\clearpage
+    \captionsetup{justification=raggedright,singlelinecheck=off}
+    \begin{lstlisting}[label=lst:lev_cach,caption=Рекурсивный алгоритм нахождения расстояния Дамерау-Левенштейна]
+def damerau_levenshtein_recursive(str1, str2):
+	if len(str1) == 0:
+		return len(str2)
+	if len(str2) == 0:
+		return len(str1)
+	flag = 0 if (str1[-1] == str2[-1]) else 1
+	add = damerau_levenshtein_recursive(str1[:-1], str2) + 1
+	delete = damerau_levenshtein_recursive(str1, str2[:-1]) + 1
+	change = damerau_levenshtein_recursive(str1[:-1], str2[:-1]) + flag
+	transposition = damerau_levenshtein_recursive(str1[:-2], str2[:-2]) + 1
+	if (len(str1) > 1 and len(str2) > 1 and str1[-1] == str2[-2] and str1[-2] == str2[-1]):
+		minimum  = min(add, delete, change, transposition)
+	else:
+		minimum = min(add, delete, change)
+	return minimum
+\end{lstlisting}
+\end{center}
+\clearpage
+
+\begin{center}
+    \captionsetup{justification=raggedright,singlelinecheck=off}
+    \begin{lstlisting}[label=lst:dam_lev_rec,caption=Рекурсивный алгоритм нахождения расстояния Дамерау-Левенштейна с использованием кеша]
+def damerau_levenshtein_cache_recursive(str1, str2):
+	cache = {}
+	def damerau_levenshtein_recursive(str1, str2):
+		if (str1, str2) in cache:
+			return cache[(str1, str2)]
+		if len(str1) == 0:
+			return len(str2)
+		if len(str2) == 0:
+			return len(str1)
+		deletion = damerau_levenshtein_recursive(str1[:-1], str2) + 1
+		insertion = damerau_levenshtein_recursive(str1, str2[:-1]) + 1
+		substitution = damerau_levenshtein_recursive(str1[:-1], str2[:-1]) + (str1[-1] != str2[-1])
+		transposition = float('inf')
+		if len(str1) > 1 and len(str2) > 1 and str1[-1] == str2[-2] and str1[-2] == str2[-1]:
+			transposition = damerau_levenshtein_recursive(str1[:-2], str2[:-2]) + 1
+		result = min(deletion, insertion, substitution, transposition)
+		cache[(str1, str2)] = result
+		return result
+	distance = damerau_levenshtein_recursive(str1, str2)
+	return distance
+\end{lstlisting}
+\end{center}
+
+\section{Функциональные тесты}
+
+В таблице \ref{tbl:functional_test} приведены тесты для функций, реализующих алгоритмы нахождения расстояния Левенштейна и Дамерау-Левенштейна. Тесты \textit{для всех алгоритмов} пройдены успешно.
+
+\begin{table}[h]
+	\begin{center}
+        \begin{threeparttable}
+        \captionsetup{justification=raggedright,singlelinecheck=off}
+		\caption{\label{tbl:functional_test} Функциональные тесты}
+		\begin{tabular}{|c|c|c|c|c|}
+			\hline
+			& & & \multicolumn{2}{c|}{Ожидаемый результат} \\
+			\hline
+			№&Строка 1&Строка 2&Левенштейн&Дамерау-Л. \\
+			\hline
+            1&""&""&0&0 \\
+            \hline
+            2&""&слово&5&5 \\
+            \hline
+            3&слова&""&5&5 \\
+            \hline
+            4&кот&ком&1&1 \\
+			\hline
+			5&парк&прак&2&1 \\
+			\hline
+            6&машина&сирена&4&4 \\
+			\hline
+			7&здравствуйте&до свидания&10&10 \\
+			\hline
+            8&кошка&собака&3&3 \\
+			\hline
+            9&карта&карат&2&1 \\
+			\hline
+            10&спать&встать&2&2 \\
+			\hline
+			11&пока&привет&5&5 \\
+			\hline
+            12&abcdef&bacfe&4&3 \\
+			\hline
+		\end{tabular}
+        \end{threeparttable}
+	\end{center}
+\end{table}
+
+\section{Вывод}
+
+Были представлены алгоритмы нахождения расстояния Левенштейна и Дамерау-Левенштейна, которые были описаны в предыдущем разделе. Также была приведена информация о выбранных средствах для разработки алгоритмов.

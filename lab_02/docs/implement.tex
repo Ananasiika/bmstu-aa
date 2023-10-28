@@ -1,0 +1,185 @@
+\chapter{Технологическая часть}
+
+В данном разделе будут рассмотрены средства реализации, используемые типы данных, а также представлены листинги алгоритмов умножения матриц.
+
+\section{Средства реализации}
+В данной работе для реализации был выбран язык программирования $Python \cite{python-lang}$. В текущей лабораторной работе требуется замерить процессорное время для выполняемой программы, а также построить графики. Все эти инструменты присутствуют в выбранном языке программирования.
+
+Время работы было замерено с помощью функции \textit{process\_time(...)} из библиотеки $time \cite{python-lang-time}$.
+
+\section{Описание используемых типов данных}
+
+При реализации алгоритмов будут использованы следующие типы данных:
+
+\begin{itemize}
+	\item количество строк - целое число типа \textit{int};
+	\item количество столбцов - целое число типа \textit{int};
+	\item матрица - двумерный список типа \textit{int}.
+\end{itemize}
+
+
+
+\section{Реализация алгоритмов}
+
+В листингах \ref{lst:stand_alg}-\ref{lst:vin_alg} представлены реализации алгоритмов умножения матриц - стандартного, Винограда, оптимизированного алгоритма Винограда. Реализация алгоритма Штрассена находится в приложении.
+
+\begin{center}
+    \captionsetup{justification=raggedright,singlelinecheck=off}
+    \begin{lstlisting}[label=lst:stand_alg,caption=Стандартный алгоритм умножения матриц]
+def standart_alg(mat_a, mat_b):
+	rows_a = len(mat_a)
+	cols_a = len(mat_a[0])
+	cols_b = len(mat_b[0])
+	if cols_a != len(mat_b):
+		return []
+	result = [[0] * cols_b for _ in range(rows_a)]
+	for i in range(rows_a):
+		for j in range(cols_b):
+			for k in range(cols_a):
+				result[i][j] += mat_a[i][k] * mat_b[k][j]
+	return result
+	\end{lstlisting}
+	\captionsetup{justification=raggedright,singlelinecheck=off}
+	\begin{lstlisting}[label=lst:opt_vin_alg,caption=Оптимизированный алгоритм Винограда]
+def optimized_vinograd_alg(mat_a, mat_b):
+	rows_a = len(mat_a)
+	cols_a = len(mat_a[0])
+	rows_b = len(mat_b)
+	cols_b = len(mat_b[0])
+	if cols_a != rows_b:
+		return []
+	result = [[0] * cols_b for _ in range(rows_a)]
+	mul_row = [0] * rows_a
+	mul_col = [0] * cols_b
+	for i in range(rows_a):
+		for j in range(cols_a >> 1):
+			mul_row[i] += mat_a[i][j << 1] * mat_a[i][(j << 1) + 1]
+	for i in range(cols_b):
+		for j in range(rows_b >> 1):
+			mul_col[i] += mat_b[j << 1][i] * mat_b[(j << 1) + 1][i]
+	flag = cols_a % 2
+	for i in range(rows_a):
+		for j in range(cols_b):
+			result[i][j] = -mul_row[i] - mul_col[j]
+	for k in range(1, cols_a, 2):
+		result[i][j] += (mat_a[i][k - 1] + mat_b[k][j]) * (mat_a[i][k] + mat_b[k - 1][j])
+	if flag:
+		result[i][j] += mat_a[i][cols_a - 1] * mat_b[rows_b - 1][j]
+	return result
+	\end{lstlisting}
+\end{center}
+
+
+\begin{center}
+    \captionsetup{justification=raggedright,singlelinecheck=off}
+    \begin{lstlisting}[label=lst:vin_alg,caption=Алгоритм Винограда]
+def vinograd_alg(mat_a, mat_b):
+	rows_a = len(mat_a)
+	cols_a = len(mat_a[0])
+	rows_b = len(mat_b)
+	cols_b = len(mat_b[0])
+	if cols_a != rows_b:
+		return []
+	result = [[0] * cols_b for _ in range(rows_a)]
+	mul_row = [0] * rows_a
+	mul_col = [0] * cols_b
+	for i in range(rows_a):
+		for j in range(cols_a // 2):
+			mul_row[i] = mul_row[i] + mat_a[i][2 * j] * mat_a[i][2 * j + 1]
+	for i in range(cols_b):
+		for j in range(rows_b // 2):
+			mul_col[i] = mul_col[i] + mat_b[2 * j][i] * mat_b[2 * j + 1][i]
+	for i in range(rows_a):
+		for j in range(cols_b):
+			result[i][j] = -mul_row[i] - mul_col[j]
+			for k in range(cols_a // 2):
+				result[i][j] = result[i][j] + (mat_a[i][2 * k] + mat_b[2 * k + 1][j]) * (mat_a[i][2 * k + 1] + mat_b[2 * k][j])
+			if cols_a % 2 == 1:
+				result[i][j] = result[i][j] + mat_a[i][cols_a - 1] * mat_b[rows_b - 1][j]
+	return result
+\end{lstlisting}
+\end{center}
+
+
+\section{Функциональные тесты}
+
+В таблице \ref{tbl:functional_test} приведены тесты для функций, реализующих алгоритмы умножения матриц, рассматриваемых в данной лабораторной работе. Тесты \textit{для всех алгоритмов} пройдены успешно.
+
+
+\begin{table}[h]
+	\begin{center}
+		\begin{threeparttable}
+		\captionsetup{justification=raggedright,singlelinecheck=off}
+		\caption{\label{tbl:functional_test} Функциональные тесты}
+		\begin{tabular}{|c@{\hspace{7mm}}|c@{\hspace{7mm}}|c@{\hspace{7mm}}|c@{\hspace{7mm}}|c@{\hspace{7mm}}|c@{\hspace{7mm}}|}
+			\hline
+			Матрица 1 & Матрица 2 & Ожидаемый результат \\ 
+			\hline
+
+			$\begin{pmatrix}
+				1 & 5 & 7\\
+				2 & 6 & 8\\
+				3 & 7 & 9
+			\end{pmatrix}$ &
+			$\begin{pmatrix}
+				&
+			\end{pmatrix}$ &
+			Сообщение об ошибке \\ \hline
+
+			$\begin{pmatrix}
+				1 & 2 & 3
+			\end{pmatrix}$ &
+			$\begin{pmatrix}
+				1 & 2 & 3
+			\end{pmatrix}$ &
+			Сообщение об ошибке \\ \hline
+
+			$\begin{pmatrix}
+				1 & 1 & 1
+			\end{pmatrix}$ &
+			$\begin{pmatrix}
+				1 \\
+				1 \\
+				1
+			\end{pmatrix}$ &
+			$\begin{pmatrix}
+				1 & 1 & 1\\
+				1 & 1 & 1 \\
+				1 & 1 & 1
+			\end{pmatrix}$ \\ \hline
+
+			$\begin{pmatrix}
+				1 & 2 & 3 \\
+				4 & 5 & 6 \\
+				7 & 8 & 9
+			\end{pmatrix}$ &
+			$\begin{pmatrix}
+				1 & 0 & 0 \\
+				0 & 1 & 0 \\
+				0 & 0 & 1
+			\end{pmatrix}$ &
+			$\begin{pmatrix}
+				1 & 2 & 3 \\
+				4 & 5 & 6 \\
+				7 & 8 & 9
+			\end{pmatrix}$ \\ \hline
+
+			$\begin{pmatrix}
+				2
+			\end{pmatrix}$ &
+			$\begin{pmatrix}
+				2
+			\end{pmatrix}$ &
+			$\begin{pmatrix}
+				4
+			\end{pmatrix}$ \\ \hline
+
+		\end{tabular}
+		\end{threeparttable}
+	\end{center}
+	
+\end{table}
+
+\section{Вывод}
+
+Были представлены листинги всех алгоритмов умножения матриц - стандартного, Винограда, оптимизированного алгоритма Винограда и Штрассена. Также в данном разделе была приведена информация о выбранных средствах для разработки алгоритмов и используемых типов данных.

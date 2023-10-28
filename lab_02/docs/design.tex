@@ -1,0 +1,251 @@
+\chapter{Конструкторская часть}
+В этом разделе будут представлены схемы алгоритмов перемножения матриц - стандартного, Винограда, оптимизации алгоритма Винограда и \\Штрассена.
+
+\section{Сведения о модулях программы}
+Программа состоит из двух модулей:
+\begin{itemize}
+	\item $main.py$ - файл, содержащий весь служебный код;
+    \item $algorythms.py$ - файл, содержащий код всех алгоритмов перемножения матриц. \newline
+\end{itemize}
+
+
+\section{Разработка алгоритмов}
+На рисунке \ref{img:stand_alg} представлена схема алгоритма для стандартного умножения матриц. На рисунках \ref{img:vin_alg1}-\ref{img:vin_alg2} схема алгоритма Винограда умножения матриц, на \ref{img:opt_vin_alg1}-\ref{img:opt_vin_alg2} схема оптимизированного алгоритма Винограда, а на рисунках \ref{img:strassen}-\ref{img:strassen2} схема алгоритма Штрассена. 
+
+\imgScale{0.75}{stand_alg}{Схема стандартного алгоритма умножения матриц}
+\imgScale{0.6}{vin_alg1}{Схема алгоритма Винограда (часть 1)}
+\imgScale{0.6}{vin_alg2}{Схема алгоритма Винограда (часть 2)}
+\imgScale{0.6}{opt_vin_alg1}{Схема оптимизированного алгоритма Винограда (часть 1)}
+\imgScale{0.6}{opt_vin_alg2}{Схема оптимизированного алгоритма Винограда (часть 2)}
+\imgScale{0.6}{strassen}{Схема алгоритма Штрассена (часть 1)}
+\imgScale{0.6}{strassen2}{Схема алгоритма Штрассена (часть 2)}
+
+\clearpage
+
+
+\section{Модель вычислений}
+
+Чтобы провести вычисление трудоемкости алгоритмов умножения матриц, введем модель вычислений \cite{model}:
+
+\begin{enumerate}
+	\item Трудоемкость следующих базовых операций единична:
+	+, -, =, +=, -=, ==, !=, <, >, <=, >=, [], ++, --, <<, >>.
+	Операции *, \%, / имеют трудоемкость 2.
+	\item трудоемкость оператора выбора \code{if условие then A else B} рассчитывается, как (\ref{for:if});
+	\begin{equation}
+		\label{for:if}
+		f_{if} = f_{\text{условия}} +
+		\begin{cases}
+			f_A, & \text{если условие выполняется,}\\
+			f_B, & \text{иначе.}
+		\end{cases}
+	\end{equation}
+	\item трудоемкость цикла рассчитывается, как (\ref{for:for});
+	\begin{equation}
+		\label{for:for}
+		f_{for} = f_{\text{инициализации}} + f_{\text{сравнения}} + N(f_{\text{тела}} + f_{\text{инкремента}} + f_{\text{сравнения}})
+	\end{equation}
+	\item трудоемкость передачи параметров в функцию и возврат из нее равны 0.
+\end{enumerate}
+
+
+\section{Трудоемкость алгоритмов}
+
+Рассчитаем трудоемкость алгоритмов умножения матриц. Введем обозначения: $M =$ количество строк матрицы $А$, $N -$ количество столбцов $B$, $K -$ количество столбцов $А$ или количество строк $B$.
+
+\subsection{Стандартный алгоритм умножения матриц}
+
+Для стандартного алгоритма умножения матриц трудоемкость будет складываться из:
+
+\begin{itemize}
+	\item внешнего цикла по $i \in [1..M]$, трудоёмкость которого: $f = 2 + M \cdot (2 + f_{body})$;
+	\item цикла по $j \in [1..N]$, трудоёмкость которого: $f = 2 + N \cdot (2 + f_{body})$;
+	\item цикла по $k \in [1..K]$, трудоёмкость которого: $f = 2 + 9K$. \newline
+\end{itemize}
+
+Поскольку трудоемкость стандартного алгоритма равна трудоемкости внешнего цикла, то:
+
+\begin{equation}
+	\label{for:standard}
+	f_{standard} = 2 + M \cdot (4 + N \cdot (4 + 9K)) = 2 + 4M + 4MN + 9MNK \approx 9MNK
+\end{equation}
+
+
+\subsection{Алгоритм Винограда}
+
+Чтобы вычислить трудоемкость алгоритма Винограда, нужно учесть следующее: 
+
+\begin{itemize}
+	\item создание и инициализация массивов a\_tmp и b\_tmp, трудоёмкость которых (\ref{for:init}):
+	\begin{equation}
+		\label{for:init}
+		f_{init} = M + N;
+	\end{equation}
+	
+	\item заполнение массива a\_tmp, трудоёмкость которого (\ref{for:ATMP}):
+	\begin{equation}
+		\label{for:ATMP}
+		f_{a\_tmp} = 2 + M (4 + \frac{K}{2} \cdot 15);
+	\end{equation}
+	
+	\item заполнение массива b\_tmp, трудоёмкость которого (\ref{for:BTMP}):
+	\begin{equation}
+		\label{for:BTMP}
+		f_{b\_tmp} = 2 + N (4 + \frac{K}{2} \cdot 15);
+	\end{equation}
+	
+	\item цикл заполнения для чётных размеров, трудоёмкость которого (\ref{for:cycle}):
+	\begin{equation}
+		\label{for:cycle}
+		f_{cycle} = 2 + M (4 + N \cdot (14 + \frac{K}{2} \cdot 28));
+	\end{equation}
+	
+	\item цикл заполнения для нечётных размеров, трудоемкость которого (\ref{for:cycle_odd}):
+	\begin{equation}
+		\label{for:cycle_odd}
+		f_{cycle} = 2 + M (4 + N \cdot (28 + \frac{K}{2} \cdot 28)).
+	\end{equation}
+\end{itemize}
+
+Тогда для худшего случая (нечётный общий размер матриц) имеем (\ref{for:bad}):
+\begin{equation}
+	\label{for:bad}
+	f_{worst} =  f_{a\_tmp} + f_{b\_tmp} + f_{cycle_odd}\approx 14 \cdot MNK
+\end{equation}
+
+Для лучшего случая (чётный общий размер матриц) имеем (\ref{for:good}):
+\begin{equation}
+	\label{for:good}
+f_{best} =  f_{a\_tmp} + f_{a\_tmp} + f_{cycle} \approx 14 \cdot MNK
+\end{equation}
+
+
+\subsection{Оптимизированный алгоритм Винограда}
+
+Оптимизация заключается в:
+\begin{itemize}
+    \item использовании побитового сдвига вместо деления на 2;
+    \item операции сложения и вычитания заменены на операции $+=$ и $-=$ соответственно;
+    \item вычисление четности матрицы вынесено из цикла.
+    \newline
+\end{itemize}
+
+Тогда трудоемкость оптимизированного алгоритма Винограда состоит из:
+
+\begin{itemize}
+	\item создания и инициализации массивов a\_tmp и b\_tmp (\ref{for:init});
+	
+	\item заполнения массива a\_tmp, трудоёмкость которого (\ref{for:ATMP});
+	
+	\item заполнения массива b\_tmp, трудоёмкость которого (\ref{for:BTMP});
+	
+	\item цикла заполнения для чётных размеров, трудоёмкость которого (\ref{for:impr_cycle}):
+	\begin{equation}
+		\label{for:impr_cycle}
+		f_{cycle} = 2 + M (4 + N \cdot (11 + \frac{K}{2} \cdot 17));
+	\end{equation}
+	
+	\item цикла заполнения для чётных размеров, трудоёмкость которого (\ref{for:impr_cycle_odd}):
+	\begin{equation}
+		\label{for:impr_cycle_odd}
+		f_{cycle} = 2 + M (4 + N \cdot (22 + \frac{K}{2} \cdot 17)).
+	\end{equation}
+\end{itemize}
+
+Тогда для худшего случая (нечётный общий размер матриц) имеем (\ref{for:bad_impr}):
+\begin{equation}
+	\label{for:bad_impr}
+	f_{worst} =  f_{a\_tmp} + f_{a\_tmp} + f_{impr_cycle_odd} \approx 8.5MNK
+\end{equation}
+
+Для лучшего случая (чётный общий размер матриц) имеем (\ref{for:good_impr}):
+\begin{equation}
+	\label{for:good_impr}
+	f_{best} = f_{a\_tmp} + f_{a\_tmp} + f_{impr_cycle} \approx 8.5MNK
+\end{equation}
+
+
+\subsection{Алгоритм Штрассена}
+
+Введем размер S - ближайшая степень двойки, которая больше или равна размерам матриц A и B.
+
+
+Для алгоритма Штрассена умножения матриц трудоемкость будет складываться из:
+
+\begin{itemize}
+	\item создания и инициализации матриц a\_new и b\_new, трудоемкость которого (\ref{for:init_s}):
+	\begin{equation}
+		\label{for:init_s}
+		f_{init} = f_{a\_new} + f_{b\_new} = 2 * S;
+	\end{equation}
+	\item заполнения матрицы a\_new, трудоемкость которого (\ref{for:a_new}):
+	\begin{equation}
+		\label{for:a_new}
+		f_{fill_a} = 2 + M (4 + K \cdot 5);
+	\end{equation}
+	\item заполнения матрицы b\_new, трудоемкость которого (\ref{for:b_new}):
+	\begin{equation}
+		\label{for:b_new}
+		f_{fill_b} = 2 + K (4 + N \cdot 5);
+	\end{equation}
+	\item вызова функции $strassen\_recursive$, трудоемкость которого 0 и трудоемкости этой функции, которую посчитаем отдельно;
+	\item заполнения матрицы C, трудоемкость которого (\ref{for:c_new}):
+	\begin{equation}
+		\label{for:c_new}
+		f_{fill_c} = 2 + M \cdot 3.
+	\end{equation}
+	\newline
+\end{itemize}
+
+Вычислим трудоемкость функции $strassen\_recursive$. Пусть $n$ - размер матриц, которые передаются в эту функцию, тогда трудоемкость состоит из:
+\begin{itemize}
+	\item создания и инициализации матриц a11, a12, a21, a22, b11, b12, b21, b22, трудоемкость которого (\ref{for:init_s_r}):
+	\begin{equation}
+		\label{for:init_s_r}
+		f_{init} = 8 \cdot (\frac{n}{2} + \frac{n}{2}) = 8n;
+	\end{equation}
+	\item заполнения этих матриц, трудоемкость которого (\ref{for:fill_r}):
+	\begin{equation}
+		\label{for:fill_r}
+		f_{fill} = 16 + 20n;
+	\end{equation}
+	\item вызова $strassen\_recursive$ 7 раз, трудоемкость которых 0, но трудоемкость вычисления передаваемых параметров (\ref{for:calc}):
+	\begin{equation}
+		\label{for:calc}
+		f_{calc\_param} = 10 \cdot (2 + n + 2n^2);
+	\end{equation}
+	\item вычисления подматриц результата, трудоемкость которого (\ref{for:calc_res}):
+	\begin{equation}
+		\label{for:calc_res}
+		f_{calc\_res} = 8 \cdot (2 + n + 2n^2);
+	\end{equation}
+	\item составления результирующей матрицы, трудоемкость которого (\ref{for:res}):
+	\begin{equation}
+		\label{for:res}
+		f_{res} = 4 + 4n.
+	\end{equation}
+\end{itemize}
+
+Таким образом, общая трудоемкость алгоритма Штрассена (\ref{for:sht}):
+\begin{equation}
+	\label{for:sht}
+	f_{sht} = 6 + 2S + 7M + 5MK + 5NK + \sum_{n=1}^{\frac{n}{2}}{52 + 28n + 36n^2}
+\end{equation}
+
+Сумма происходит для $n$ по степеням двойки от 1 до $\frac{n}{2}$.
+
+\section{Классы эквивалентности при тестировании}
+
+Для тестирования выделены классы эквивалентности, представленные ниже.
+
+\begin{enumerate}
+	\item Одна из матриц - пустая;
+	\item Количество столбцов одной матрицы не равно количеству строк второй матрицы;
+	\item Перемножение квадратных матриц;
+	\item Перемножение матриц разных размеров (при этом количество столбцов одной матрицы не равно количеству строк второй матрицы).
+\end{enumerate}
+
+
+\section{Вывод}
+
+В данном разделе были построены схемы алгоритмов умножения матриц рассматриваемых в лабораторной работе, были описаны классы эквивалентности для тестирования, модули программы, а также проведена теоретическая оценка трудоемкости алгоритмов.
