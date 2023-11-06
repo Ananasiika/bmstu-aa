@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2023.9.8)  26 OCT 2023 23:39
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2023.9.8)  2 NOV 2023 00:08
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1232,7 +1232,7 @@ Package geometry Warning: `pdftex': not available in `\newgeometry'; skipped.
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-<img/b_logo.jpg, id=138, 57.816pt x 65.3715pt>
+<img/b_logo.jpg, id=139, 57.816pt x 65.3715pt>
 File: img/b_logo.jpg Graphic file (type jpg)
 <use img/b_logo.jpg>
 Package pdftex.def Info: img/b_logo.jpg  used on input line 5.
@@ -1373,28 +1373,18 @@ l.31 ...mberline {4.4}Р’С‹РІРѕРґ}{31}{section.4.4}
 
 
 
+
 ]
 \openout2 = `analysis.aux'.
 
  (./analysis.tex
 {\cyrillictext \CYRG \cyrl \cyra \cyrv \cyra } 1.
-
-Underfull \hbox (badness 10000) in paragraph at lines 14--15
-
- []
-
 [4
 
 
 
 
-] [5]
-Overfull \hbox (2.69742pt too wide) in paragraph at lines 84--86
-\T2A/cmr/m/n/14.4 про-из-во-ди-тель-но-сти: несмот-ря на то, что по-лу-чен-ное 
-вы-ра-же-ние тре-бу-ет боль-
- []
-
-[6] [7]) [8]
+] [5] [6] [7]) [8]
 \openout2 = `design.aux'.
 
  (./design.tex
@@ -1404,7 +1394,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 8--9
 
  []
 
-<img/stand_alg.png, id=259, 404.51125pt x 944.52875pt>
+<img/stand_alg.png, id=267, 404.51125pt x 944.52875pt>
 File: img/stand_alg.png Graphic file (type png)
 <use img/stand_alg.png>
 Package pdftex.def Info: img/stand_alg.png  used on input line 15.
@@ -1415,7 +1405,7 @@ LaTeX Warning: Float too large for page by 4.15898pt on input line 15.
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-<img/vin_alg1.png, id=261, 360.34625pt x 1185.42876pt>
+<img/vin_alg1.png, id=269, 360.34625pt x 1185.42876pt>
 File: img/vin_alg1.png Graphic file (type png)
 <use img/vin_alg1.png>
 Package pdftex.def Info: img/vin_alg1.png  used on input line 16.
@@ -1426,7 +1416,7 @@ LaTeX Warning: Float too large for page by 7.0269pt on input line 16.
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-<img/vin_alg2.png, id=262, 399.4925pt x 1044.90375pt>
+<img/vin_alg2.png, id=270, 399.4925pt x 1044.90375pt>
 File: img/vin_alg2.png Graphic file (type png)
 <use img/vin_alg2.png>
 Package pdftex.def Info: img/vin_alg2.png  used on input line 17.
@@ -1434,7 +1424,7 @@ Package pdftex.def Info: img/vin_alg2.png  used on input line 17.
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-<img/opt_vin_alg1.png, id=263, 358.33875pt x 1195.46625pt>
+<img/opt_vin_alg1.png, id=271, 358.33875pt x 1195.46625pt>
 File: img/opt_vin_alg1.png Graphic file (type png)
 <use img/opt_vin_alg1.png>
 Package pdftex.def Info: img/opt_vin_alg1.png  used on input line 18.
@@ -1445,7 +1435,7 @@ LaTeX Warning: Float too large for page by 13.04945pt on input line 18.
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-<img/opt_vin_alg2.png, id=264, 399.4925pt x 1125.20375pt>
+<img/opt_vin_alg2.png, id=272, 399.4925pt x 1125.20375pt>
 File: img/opt_vin_alg2.png Graphic file (type png)
 <use img/opt_vin_alg2.png>
 Package pdftex.def Info: img/opt_vin_alg2.png  used on input line 19.
@@ -1453,7 +1443,7 @@ Package pdftex.def Info: img/opt_vin_alg2.png  used on input line 19.
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-<img/strassen.png, id=265, 773.89125pt x 1195.46625pt>
+<img/strassen.png, id=273, 773.89125pt x 1195.46625pt>
 File: img/strassen.png Graphic file (type png)
 <use img/strassen.png>
 Package pdftex.def Info: img/strassen.png  used on input line 20.
@@ -1464,7 +1454,7 @@ LaTeX Warning: Float too large for page by 13.04945pt on input line 20.
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-<img/strassen2.png, id=266, 402.50375pt x 1145.27875pt>
+<img/strassen2.png, id=274, 402.50375pt x 1145.27875pt>
 File: img/strassen2.png Graphic file (type png)
 <use img/strassen2.png>
 Package pdftex.def Info: img/strassen2.png  used on input line 21.
@@ -1501,28 +1491,23 @@ Underfull \hbox (badness 10000) in paragraph at lines 63--64
 
  []
 
+
+Overfull \hbox (12.7955pt too wide) in paragraph at lines 66--67
+[]\T2A/cmr/m/n/14.4 Поскольку тру-до-ем-кость стан-дарт-но-го ал-го-рит-ма рав-
+на тру-до-ем-ко-сти внеш-
+ []
+
 [18]
 Underfull \hbox (badness 10000) in paragraph at lines 129--131
 
  []
 
 [19]
-Overfull \hbox (0.96262pt too wide) in paragraph at lines 173--174
-[]\T2A/cmr/m/n/14.4 Для ал-го-рит-ма Штрас-се-на умно-же-ния мат-риц тру-до-ем-
-кость бу-дет скла-
- []
-
-[20]
 Underfull \hbox (badness 10000) in paragraph at lines 196--198
 
  []
 
-[21]
-Overfull \hbox (0.46468pt too wide) in paragraph at lines 237--237
- |[]\T2A/cmr/bx/n/20.74 Классы эк-ви-ва-лент-но-сти при те-сти-ро-ва-
- []
-
-) [22]
+[20] [21]) [22]
 \openout2 = `implement.aux'.
 
  (./implement.tex
@@ -1546,21 +1531,15 @@ File: ts1cmss.fd 2019/12/16 v2.5j Standard LaTeX font definitions
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-)
-Overfull \hbox (2.32846pt too wide) in paragraph at lines 185--14
-\T2A/cmr/m/n/14.4 стан-дарт-но-го, Ви-но-гра-да, оп-ти-ми-зи-ро-ван-но-го ал-го
--рит-ма Ви-но-гра-да и Штрас-
- []
-
-[25] [26]
+) [25] [26]
 \openout2 = `research.aux'.
 
  (./research.tex
 {\cyrillictext \CYRG \cyrl \cyra \cyrv \cyra } 4.
-<img/example.png, id=502, 698.61pt x 839.135pt>
+<img/example.png, id=540, 698.61pt x 839.135pt>
 File: img/example.png Graphic file (type png)
 <use img/example.png>
-Package pdftex.def Info: img/example.png  used on input line 21.
+Package pdftex.def Info: img/example.png  used on input line 28.
 (pdftex.def)             Requested size: 450.07233pt x 540.60236pt.
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
@@ -1573,15 +1552,15 @@ LaTeX Warning: `!h' float specifier changed to `!ht'.
 ] [28 <./img/example.png>] [29
 
 ]
-<img/graph_all.png, id=524, 916.42375pt x 656.4525pt>
+<img/graph_all.png, id=562, 916.42375pt x 656.4525pt>
 File: img/graph_all.png Graphic file (type png)
 <use img/graph_all.png>
-Package pdftex.def Info: img/graph_all.png  used on input line 92.
+Package pdftex.def Info: img/graph_all.png  used on input line 99.
 (pdftex.def)             Requested size: 397.2148pt x 284.52756pt.
-<img/graph.png, id=525, 916.42375pt x 656.4525pt>
+<img/graph.png, id=563, 916.42375pt x 656.4525pt>
 File: img/graph.png Graphic file (type png)
 <use img/graph.png>
-Package pdftex.def Info: img/graph.png  used on input line 93.
+Package pdftex.def Info: img/graph.png  used on input line 100.
 (pdftex.def)             Requested size: 397.2148pt x 284.52756pt.
  [30
 
@@ -1591,6 +1570,7 @@ Package pdftex.def Info: img/graph.png  used on input line 93.
 \openout2 = `conclusion.aux'.
 
  (./conclusion.tex) [32
+
 
 
 
@@ -1614,24 +1594,25 @@ Package pdftex.def Info: img/graph.png  used on input line 93.
 (./analysis.aux) (./design.aux) (./implement.aux) (./research.aux)
 (./conclusion.aux) (./lib.aux) (./appendix.aux))
 Package rerunfilecheck Info: File `report.out' has not changed.
-(rerunfilecheck)             Checksum: B4E7D350E9D5C7BC842F2ED79B6826A8;7142.
+(rerunfilecheck)             Checksum: 022D8A2C705A06A2FEB537971930FE6C;7230.
  ) 
 Here is how much of TeX's memory you used:
- 39165 strings out of 479721
- 906815 string characters out of 5887698
- 1405400 words of memory out of 5000000
- 56120 multiletter control sequences out of 15000+600000
+ 39199 strings out of 479721
+ 907047 string characters out of 5887698
+ 1405440 words of memory out of 5000000
+ 56119 multiletter control sequences out of 15000+600000
  488884 words of font info for 65 fonts, out of 8000000 for 9000
  430 hyphenation exceptions out of 8191
  106i,18n,99p,1079b,2132s stack positions out of 5000i,500n,10000p,200000b,80000s
  </home/larisa/.texlive2021/texmf-var/fonts/pk/ljfour/jknappen/ec/tcss1200.60
 0pk> </home/larisa/.texlive2021/texmf-var/fonts/pk/ljfour/lh/lh-t2a/lass1200.60
 0pk> </home/larisa/.texlive2021/texmf-var/fonts/pk/ljfour/lh/lh-t2a/lasx1200.60
-0pk> </home/larisa/.texlive2021/texmf-var/fonts/pk/ljfour/lh/lh-t2a/labx1728.60
-0pk> </home/larisa/.texlive2021/texmf-var/fonts/pk/ljfour/lh/lh-t2a/larm1000.60
-0pk> </home/larisa/.texlive2021/texmf-var/fonts/pk/ljfour/lh/lh-t2a/latt1440.60
-0pk> </home/larisa/.texlive2021/texmf-var/fonts/pk/ljfour/lh/lh-t2a/lati1440.60
 0pk> </home/larisa/.texlive2021/texmf-var/fonts/pk/ljfour/jknappen/ec/tcrm1440.
+600pk> </home/larisa/.texlive2021/texmf-var/fonts/pk/ljfour/lh/lh-t2a/labx1728.
+600pk> </home/larisa/.texlive2021/texmf-var/fonts/pk/ljfour/lh/lh-t2a/larm1000.
+600pk> </home/larisa/.texlive2021/texmf-var/fonts/pk/ljfour/lh/lh-t2a/latt1440.
+600pk> </home/larisa/.texlive2021/texmf-var/fonts/pk/ljfour/lh/lh-t2a/lati1440.
+600pk> </home/larisa/.texlive2021/texmf-var/fonts/pk/ljfour/lh/lh-t2a/larm2488.
 600pk> </home/larisa/.texlive2021/texmf-var/fonts/pk/ljfour/lh/lh-t2a/larm1440.
 600pk> </home/larisa/.texlive2021/texmf-var/fonts/pk/ljfour/lh/lh-t2a/labx1440.
 600pk> </home/larisa/.texlive2021/texmf-var/fonts/pk/ljfour/lh/lh-t2a/labx2488.
@@ -1646,10 +1627,10 @@ texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/share/texlive
 dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/fo
 nts/type1/public/amsfonts/cm/cmr7.pfb></usr/share/texlive/texmf-dist/fonts/type
 1/public/amsfonts/cm/cmsy10.pfb>
-Output written on report.pdf (36 pages, 762358 bytes).
+Output written on report.pdf (36 pages, 758337 bytes).
 PDF statistics:
- 1307 PDF objects out of 1440 (max. 8388607)
- 675 compressed objects within 7 object streams
- 258 named destinations out of 1000 (max. 500000)
+ 1356 PDF objects out of 1440 (max. 8388607)
+ 722 compressed objects within 8 object streams
+ 294 named destinations out of 1000 (max. 500000)
  352 words of extra memory for PDF output out of 10000 (max. 10000000)
 

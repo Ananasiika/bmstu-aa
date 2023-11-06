@@ -1,5 +1,5 @@
 \babel@toc {russian}{}\relax 
-\contentsline {chapter}{ВВЕДЕНИЕ}{3}{chapter*.1}%
+\contentsline {chapter}{Введение}{3}{chapter*.2}%
 \contentsline {chapter}{\numberline {1}Аналитическая часть}{4}{chapter.1}%
 \contentsline {section}{\numberline {1.1}Матрица}{4}{section.1.1}%
 \contentsline {section}{\numberline {1.2}Стандартный алгоритм}{4}{section.1.2}%
@@ -27,8 +27,8 @@
 \contentsline {chapter}{\numberline {4}Исследовательская часть}{27}{chapter.4}%
 \contentsline {section}{\numberline {4.1}Технические характеристики}{27}{section.4.1}%
 \contentsline {section}{\numberline {4.2}Демонстрация работы программы}{27}{section.4.2}%
-\contentsline {section}{\numberline {4.3}Время выполнения алгоритмов}{29}{section.4.3}%
+\contentsline {section}{\numberline {4.3}Время выполнения реализации алгоритмов}{29}{section.4.3}%
 \contentsline {section}{\numberline {4.4}Вывод}{31}{section.4.4}%
-\contentsline {chapter}{ЗАКЛЮЧЕНИЕ}{32}{section.4.4}%
-\contentsline {chapter}{СПИСОК ИСПОЛЬЗУЕМЫХ ИСТОЧНИКОВ}{33}{section.4.4}%
-\contentsline {chapter}{ПРИЛОЖЕНИЕ 1}{34}{chapter*.16}%
+\contentsline {chapter}{Заключение}{32}{chapter*.17}%
+\contentsline {chapter}{Список используемых источников}{33}{chapter*.17}%
+\contentsline {chapter}{ПРИЛОЖЕНИЕ A}{34}{chapter*.18}%
