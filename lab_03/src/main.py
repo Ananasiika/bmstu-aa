@@ -184,7 +184,7 @@ def test_sort():
     plt.grid()
     plt.title("Временные характеристики алгоритмов сортировок\n" + type + "массив")
     plt.ylabel("Затраченное время (мс)")
-    plt.xlabel("Длина")
+    plt.xlabel("Длина массива")
     
     plt.show()
 

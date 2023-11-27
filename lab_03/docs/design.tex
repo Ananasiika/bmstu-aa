@@ -9,20 +9,46 @@
 \end{itemize}
 
 \section{Разработка алгоритмов}
-На рисунках \ref{img:comb} - \ref{img:merge2} представлены схемы алгоритмов сортировки - расческой, бинарным деревом и слиянием.
+На рисунках \ref{fig:comb}-\ref{fig:merge2} представлены схемы алгоритмов сортировки - расческой, бинарным деревом и слиянием.
 
-\img{220mm}{comb}{Схема алгоритма сортировки расческой}
-\img{240mm}{bin_tree}{Схема алгоритма сортировки бинарным деревом - 1 часть}
-\img{110mm}{bin_tree2}{Схема алгоритма сортировки бинарным деревом - 2 часть}
-\img{100mm}{merge}{Схема алгоритма сортировки слиянием - 1 часть}
-\img{220mm}{merge2}{Схема алгоритма сортировки слиянием - 2 часть}
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=0.8\linewidth]{img/comb}
+	\caption{Схема алгоритма сортировки расческой}
+	\label{fig:comb}
+\end{figure}
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=0.8\linewidth]{img/bin_tree}
+	\caption{Схема алгоритма сортировки бинарным деревом - 1 часть}
+	\label{fig:bin_tree}
+\end{figure}
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=0.8\linewidth]{img/bin_tree2}
+	\caption{Схема алгоритма сортировки бинарным деревом - 2 часть}
+	\label{fig:bin_tree2}
+\end{figure}
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=0.8\linewidth]{img/merge}
+	\caption{Схема алгоритма сортировки слиянием - 1 часть}
+	\label{fig:merge}
+\end{figure}
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=0.7\linewidth]{img/merge2}
+	\caption{Схема алгоритма сортировки слиянием - 2 часть}
+	\label{fig:merge2}
+\end{figure}
 
 \clearpage
 
 \section{Модель вычислений для проведения оценки трудоемкости}
 Чтобы провести вычисление трудоемкости алгоритмов умножения матриц, введем модель вычислений \cite{model}:
 
-\begin{enumerate}
+\begin{enumerate}[label=\arabic*)]
 	\item Трудоемкость следующих базовых операций единична:
 	+, -, =, +=, -=, ==, !=, <, >, <=, >=, [], ++, --, <<, >>.
 	Операции *, \%, / имеют трудоемкость 2.
@@ -85,7 +111,7 @@
 \subsection{Алгоритм сортировки бинарным деревом}
 
 Трудоемкость алгоритма сортировки бинарным деревом состоит из:
-\begin{enumerate}
+\begin{enumerate}[label=\arabic*)]
 	\item Трудоемкости построения бинарного дерева, которая равна (\ref{for:make_tree});
 	\begin{equation}
 		\label{for:make_tree}
@@ -118,9 +144,9 @@
 Трудоемкость алгоритма сортировки слиянием состоит из трудоемкости функций $merge$ и $merge\_sort$.
 
 Трудоемкость функции merge состоит из
-\begin{enumerate}
+\begin{enumerate}[label=\arabic*)]
 	\item предварительной инициализации, трудоемкость которой равна 2;
-	\item основного цикла, трудоемкость которого(\ref{for:main_loop});
+	\item основного цикла, трудоемкость которого (\ref{for:main_loop});
 	\begin{equation}
 		\label{for:main_loop}
 		f_{main\_loop} = 2 + N\cdot(3 + 8)
