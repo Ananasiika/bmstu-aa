@@ -1,0 +1,94 @@
+\chapter{Технологическая часть}
+
+В данном разделе будут рассмотрены средства реализации, а также представлены листинги алгоритмов построения дерева синтаксических зависимостей в тексте с распараллеливанием и без него.
+\section{Средства реализации}
+В данной работе для реализации был выбран язык программирования $C++$~\cite{cpp-lang}. В текущей лабораторной работе требуется замерить процессорное время для выполняемой программы, а также реализовать принципы многопоточного алгоритма. Все эти инструменты присутствуют в выбранном языке программирования. 
+
+Построение дерева синтаксических зависимостей с помощью библиотеки $spacy$ и графиков для анализа времени были реализованы с использованием языка программирования $Python$~\cite{python-lang}.
+
+Время замерено с помощью \textit{std::chrono::system\_clock::now(...)} --- функции из библиотеки $chrono$~\cite{cpp-lang-chrono}.
+\section{Листинги кода}
+
+В листинге~\ref{lst:alg} представлена реализация алгоритма построения дерева синтаксических зависимостей с чтением исходного текста из файла и сохранением результата в файл, а в листингах \ref{lst:no_par_alg} и \ref{lst:par_alg} реализация рассматриваемых алгоритмов с использованием многопоточности и без.
+\begin{center}
+	\captionsetup{justification=raggedright,singlelinecheck=off}
+	\begin{lstlisting}[label=lst:no_par_alg,caption=Алгоритм построения дерева синтаксических зависимостей без многопоточности]
+void exec_no_parallel(QString size)
+{
+	QString command = "python3 ./main.py data/input_" + size + "kb.txt ./result/no_" + size + "output.txt";	
+	system(command.toLatin1().constData());
+}
+	\end{lstlisting}
+\end{center}
+\begin{center}
+    \captionsetup{justification=raggedright,singlelinecheck=off}
+    \begin{lstlisting}[label=lst:par_alg,caption=Алгоритм построения дерева синтаксических зависимостей с многопоточностью]
+void executeCommand(const QString& command) {
+	system(command.toLatin1().constData());
+}
+void exec_parallel(QString size, int threads_count)
+{
+	QString filename = "data/input_" + size + "kb.txt";
+	QFile file(filename);
+	if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+		qDebug() << "Failed to open input file:" << filename;
+		return;
+	}
+	QTextStream in(&file);
+	QString text = in.readAll();
+	file.close();
+	int partLength = text.length() / threads_count;
+	for (int i = 0; i < threads_count; ++i) {
+		QString part = text.mid(i * partLength, partLength);
+		QString partFile = "data/parts/part_" + size + "kb_" + QString::number(i) + ".txt";
+		QFile partFileObj(partFile);
+		if(!partFileObj.open(QIODevice::WriteOnly|QIODevice::Text)){
+			qDebug() << "Failed to open part file:" << partFile;
+			continue;
+		}
+		QTextStream out(&partFileObj);
+		out << part;
+		partFileObj.close();
+	}
+	std::vector<std::thread> threads;
+	for (int i = 0; i < threads_count; ++i) {
+		QString command = "python3 ./main.py data/parts/part_" + size + "kb_" + QString::number(i) + ".txt ./result/" + size + "output.txt";
+		threads.push_back(std::thread(executeCommand, command));
+	}
+	for (std::thread& t : threads) {
+		t.join();
+	}
+}
+\end{lstlisting}
+\end{center}
+
+\begin{center}
+	\captionsetup{justification=raggedright,singlelinecheck=off}
+	\begin{lstlisting}[label=lst:alg,caption=Алгоритм построения дерева синтаксических зависимостей с помощью библиотеки spacy]
+parser = argparse.ArgumentParser()
+parser.add_argument('input_file')
+parser.add_argument('output_file')
+args = parser.parse_args()
+nlp = spacy.load("ru_core_news_sm")
+with open(args.input_file, 'r') as file:
+	text = file.read()
+doc = nlp(text)
+with open(args.output_file, 'a', encoding="utf-8") as file:
+	for token in doc:
+		file.write(token.text + " " + token.dep_ + " " + token.head.text + '\n')
+	\end{lstlisting}
+\end{center}
+
+\section{Сведения о модулях программы}
+Программа состоит из следующих модулей:
+\begin{enumerate}[label=\arabic*)]
+	\item \textit{main.cpp} --- файл, содержащий функцию, вызывающую интерфейс программы;
+    \item \textit{mainwindow.h} и \textit{mainwindow.cpp} --- файлы, содержащие код всех методов, реализующих интерфейс программы и взаимодействующие с ним;
+	\item \textit{building.h} и \textit{building.cpp} --- файлы, содержащие код реализаций алгоритмов построения дерева синтаксических зависимостей с многопоточностью и без нее, а также функции замера времени;
+	\item \textit{graph.py} --- файл, содержащий функции построения графиков для замеров по времени;
+	\item \textit{main.py} --- файл, содержащий само использование библиотеки $spacy$ для построения дерева синтаксических зависимостей.
+\end{enumerate}
+
+\section{Вывод}
+
+Были представлены листинги всех реализаций алгоритмов. Также в данном разделе была приведена информация о выбранных средствах для разработки и сведения о модулях программы.
