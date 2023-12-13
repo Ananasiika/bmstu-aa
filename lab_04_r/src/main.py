@@ -1,23 +1,23 @@
-import argparse
 import spacy
+import sys
 
 # Загрузка языковой модели Spacy для русского языка
 nlp = spacy.load("ru_core_news_sm")
 
-# Парсинг аргументов командной строки
-parser = argparse.ArgumentParser(description='Анализ текста и сохранение результатов')
-parser.add_argument('input_file', help='Путь к файлу для анализа')
-parser.add_argument('output_file', help='Путь к файлу для результата')
-args = parser.parse_args()
 
-# Чтение текста из входного файла
-with open(args.input_file, 'r') as file:
-    text = file.read()
+with open(sys.argv[1], "r") as file:
+	while (1):
+		sentence = file.readline()
+		if (len(sentence) == 0):
+			break
+		doc = nlp(sentence)
 
-# Обработка текста
-doc = nlp(text)
-# spacy.displacy.serve(doc, style='dep')
-# Построение дерева синтаксических зависимостей
-with open(args.output_file, 'a', encoding="utf-8") as file:
-    for token in doc:
-        file.write(token.text + " " + token.dep_ + " " + token.head.text + '\n')
+		# Построение дерева синтаксических зависимостей
+		dependency_tree = []
+		for token in doc:
+			dependency_tree.append(token.text + " " + token.dep_ + " " + token.head.text)
+
+		with open(sys.argv[2], "a") as file_output:
+			file_output.write("\n".join(dependency_tree))
+			file_output.write("\n\n")
+

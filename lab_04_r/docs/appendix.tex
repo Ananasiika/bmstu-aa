@@ -1,0 +1,59 @@
+\begin{appendix}
+\chapter*{Приложение А}
+\addcontentsline{toc}{chapter}{Приложение A}
+	
+В листинге \ref{lst:par_alg} представлена реализация алгоритма построения деревьев синтаксических зависимостей с многопоточностью.
+
+\begin{center}
+	\captionsetup{justification=raggedright,singlelinecheck=off}
+	\begin{lstlisting}[label=lst:par_alg,caption=Алгоритм построения деревьев синтаксических зависимостей с многопоточностью]
+void execute_one_thread(std::string filename_prep, std::string file_output) {
+	std::string command = "python3 main.py " + filename_prep + " " + file_output;
+	system(command.c_str());
+}
+void exec_parallel(QString size, int threads_count)
+{
+	std::ifstream inputFile("data/input_" + size.toStdString() + "kb.txt");
+	std::string line;
+	std::string text;
+	while (std::getline(inputFile, line)) 
+	text += line + " ";
+	std::vector<std::string> sentences;
+	std::string delimiter = ".!?";
+	size_t pos = 0;
+	std::string token;
+	while (true) {
+		pos = text.find_first_of(delimiter);
+		if (pos == std::string::npos) 
+		break;
+		token = text.substr(0, pos+1);
+		sentences.push_back(token);
+		text.erase(0, pos+1);
+	}
+	if (!text.empty()) 
+	sentences.push_back(text);
+	int sentences_count = sentences.size();
+	int part_count = sentences_count / threads_count;
+	for (int i = 0; i < threads_count; ++i) {
+		std::string filename_prep = "./data/prep/" + size.toStdString() + "_" + QString::number(i).toStdString() + ".txt";
+		std::ofstream outputFile(filename_prep);
+		if (!outputFile.is_open()) {
+			std::cout << "Failed to open output file" <<  std::endl;
+			return;
+		}
+		for (int j = 0; j < part_count; ++j)
+		outputFile << sentences[i * part_count + j] << std::endl;
+		outputFile.close();
+	}
+	std::vector<std::thread> threads;
+	for (int i = 0; i < threads_count; ++i) {
+		std::string file_output = "./result/" + size.toStdString() + "output.txt";
+		std::string filename_prep = "./data/prep/" + size.toStdString() + "_" + QString::number(i).toStdString() + ".txt";
+		threads.push_back(std::thread(execute_one_thread, filename_prep, file_output));
+	}
+	for (std::thread& t : threads)
+	t.join();
+}
+	\end{lstlisting}
+\end{center}
+\end{appendix}

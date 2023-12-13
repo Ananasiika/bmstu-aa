@@ -4,54 +4,111 @@
 #include <QtConcurrent/QtConcurrent>
 #include <QFile>
 #include <QTextStream>
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <vector>
 
 void exec_no_parallel(QString size)
 {
-    QString command = "python3 ./main.py data/input_" + size + "kb.txt ./result/no_" + size + "output.txt"; // Команда для выполнения скрипта
+    std::ifstream inputFile("data/input_" + size.toStdString() + "kb.txt");
 
-    system(command.toLatin1().constData());
+    std::string text;
+    std::string line;
+    while (std::getline(inputFile, line)) {
+        text += line + " ";
+    }
+
+    std::vector<std::string> sentences;
+    std::string delimiter = ".!?";
+
+    size_t pos = 0;
+    std::string token;
+    while (true) {
+        pos = text.find_first_of(delimiter);
+        if (pos == std::string::npos) {
+            break;
+        }
+        token = text.substr(0, pos+1);
+        sentences.push_back(token);
+        text.erase(0, pos+1);
+    }
+
+    if (!text.empty()) {
+        sentences.push_back(text);
+    }
+
+    std::string filename_prep = "./data/prep/no_" + size.toStdString() + ".txt";
+    std::ofstream outputFile(filename_prep);
+    if (!outputFile.is_open()) {
+        std::cout << "Failed to open output file" <<  std::endl;
+        return;
+    }
+
+    for (const auto& sentence : sentences) {
+        outputFile << sentence << std::endl;
+    }
+    outputFile.close();
+
+    std::string command = "python3 main.py " + filename_prep + " ./result/no_" + size.toStdString() + "output.txt";
+    system(command.c_str());
 }
 
-void executeCommand(const QString& command) {
-    system(command.toLatin1().constData());
+void execute_one_thread(std::string filename_prep, std::string file_output) {
+    std::string command = "python3 main.py " + filename_prep + " " + file_output;
+    system(command.c_str());
 }
 
 void exec_parallel(QString size, int threads_count)
 {
-    QString filename = "data/input_" + size + "kb.txt";
-    QFile file(filename);
+    std::ifstream inputFile("data/input_" + size.toStdString() + "kb.txt");
 
-    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        qDebug() << "Failed to open input file:" << filename;
-        return;
+    std::string line;
+    std::string text;
+    while (std::getline(inputFile, line)) {
+        text += line + " ";
     }
 
-    QTextStream in(&file);
-    QString text = in.readAll();
-    file.close();
-    int textLength = text.length();
-    int partLength = textLength / threads_count;
+    std::vector<std::string> sentences;
+    std::string delimiter = ".!?";
+
+    size_t pos = 0;
+    std::string token;
+    while (true) {
+        pos = text.find_first_of(delimiter);
+        if (pos == std::string::npos) {
+            break;
+        }
+        token = text.substr(0, pos+1);
+        sentences.push_back(token);
+        text.erase(0, pos+1);
+    }
+
+    if (!text.empty()) {
+        sentences.push_back(text);
+    }
+
+    int sentences_count = sentences.size();
+    int part_count = sentences_count / threads_count;
 
     for (int i = 0; i < threads_count; ++i) {
-        QString part = text.mid(i * partLength, partLength);
-        QString partFile = "data/parts/part_" + size + "kb_" + QString::number(i) + ".txt";
-        QFile partFileObj(partFile);
-
-        if (!partFileObj.open(QIODevice::WriteOnly | QIODevice::Text)) {
-            qDebug() << "Failed to open part file:" << partFile;
-            continue;
+        std::string filename_prep = "./data/prep/" + size.toStdString() + "_" + QString::number(i).toStdString() + ".txt";
+        std::ofstream outputFile(filename_prep);
+        if (!outputFile.is_open()) {
+            std::cout << "Failed to open output file" <<  std::endl;
+            return;
         }
-
-        QTextStream out(&partFileObj);
-        out << part;
-        partFileObj.close();
+        for (int j = 0; j < part_count; ++j)
+            outputFile << sentences[i * part_count + j] << std::endl;
+        outputFile.close();
     }
 
     std::vector<std::thread> threads;
 
     for (int i = 0; i < threads_count; ++i) {
-        QString command = "python3 ./main.py data/parts/part_" + size + "kb_" + QString::number(i) + ".txt ./result/" + size + "output.txt";
-        threads.push_back(std::thread(executeCommand, command));
+        std::string file_output = "./result/" + size.toStdString() + "output.txt";
+        std::string filename_prep = "./data/prep/" + size.toStdString() + "_" + QString::number(i).toStdString() + ".txt";
+        threads.push_back(std::thread(execute_one_thread, filename_prep, file_output));
     }
 
     for (std::thread& t : threads) {
