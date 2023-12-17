@@ -1,0 +1,10 @@
+\addcontentsline{toc}{chapter}{Список используемых источников}
+
+\renewcommand\bibname{Список используемых источников} % переименовать страницу списка литературы
+\makeatletter 
+\def\@biblabel#1{#1. } 
+\begingroup 
+\bibliographystyle{utf8gost705u} 
+\raggedright 
+\bibliography{lib} 
+\endgroup

@@ -1,7 +1,7 @@
 from time import process_time_ns
 from random import randint
 import matplotlib.pyplot as plt 
-from algorythms import standart_alg, vinograd_alg, optimized_vinograd_alg, strassen_alg
+from algorythms import standart_alg, vinograd_alg, optimized_vinograd_alg, strassen_alg, memory_standart_alg, memory_vinograd_alg, memory_optimized_vinograd_alg, memory_strassen_alg
 
 MSG = "\n\n      Меню \n\n \
     1. Станадартное умножение матриц \n \
@@ -96,7 +96,7 @@ def get_process_time(func, size):
         func(mat_a, mat_b)
         time_end = process_time_ns()
 
-        time_res += (time_end - time_start) / TO_MILISECONDS
+        time_res += (time_end - time_start) / TO_MILISECONDS / TO_MILISECONDS
 
 
     return time_res / TIMES
@@ -117,41 +117,42 @@ def test_algos():
 
         time_std_alg.append(get_process_time(standart_alg, num))
         time_vin_alg.append(get_process_time(vinograd_alg, num))
-        time_vin_alg_opt.append(get_process_time(optimized_vinograd_alg, num))
-        time_sht_alg.append(get_process_time(strassen_alg, num))
+    #    time_vin_alg_opt.append(get_process_time(optimized_vinograd_alg, num))
+    #     time_sht_alg.append(get_process_time(strassen_alg, num))
 
-    print("\n\nЗамер времени для алгоритмов: \n")
+    # print("\n\nЗамер времени для алгоритмов: \n")
 
-    ind = 0
+    # ind = 0
 
-    for num in for_test:
-        print(" %4d & %.4f & %.4f & %.4f & %.4f \\\\ \n \\hline" %(num, \
-            time_std_alg[ind] * TO_MILISECONDS, \
-            time_vin_alg[ind] * TO_MILISECONDS, \
-            time_vin_alg_opt[ind] * TO_MILISECONDS, \
-            time_sht_alg[ind] * TO_MILISECONDS, ))
+    # for num in for_test:
+    #     print(" %4d & %.4f & %.4f & %.4f & %.4f \\\\ \n \\hline" %(num, \
+    #         time_std_alg[ind] * TO_MILISECONDS, \
+    #         time_vin_alg[ind] * TO_MILISECONDS, \
+    #         time_vin_alg_opt[ind] * TO_MILISECONDS, \
+    #         time_sht_alg[ind] * TO_MILISECONDS, ))
 
-        ind += 1
+    #     ind += 1
 
 
-    fig = plt.figure(figsize=(10, 7))
-    plot = fig.add_subplot()
-    plot.plot(for_test, time_std_alg, label = "Стандартный алгоритм")
-    plot.plot(for_test, time_vin_alg, label="Алгоритм Винограда")
-    plot.plot(for_test, time_vin_alg_opt, label="Оптимизированный алгоритм Винограда")
-    plot.plot(for_test, time_sht_alg, label="Алгоритм Штрассена")
-    plot.semilogy()
-    plt.legend()
-    plt.grid()
-    plt.title("Временные характеристики")
-    plt.ylabel("Затраченное время (мкс)")
-    plt.xlabel("Размер")
-    plt.show()
+    # fig = plt.figure(figsize=(10, 7))
+    # plot = fig.add_subplot()
+    # plot.plot(for_test, time_std_alg, label = "Стандартный алгоритм")
+    # plot.plot(for_test, time_vin_alg, label="Алгоритм Винограда")
+    # plot.plot(for_test, time_vin_alg_opt, label="Оптимизированный алгоритм Винограда")
+    # plot.plot(for_test, time_sht_alg, label="Алгоритм Штрассена")
+    # plot.semilogy()
+    # plt.legend()
+    # plt.grid()
+    # plt.title("Временные характеристики")
+    # plt.ylabel("Затраченное время (мкс)")
+    # plt.xlabel("Размер")
+    # plt.show()
 
     fig = plt.figure(figsize=(10, 7))
     plot2 = fig.add_subplot()
     plot2.plot(for_test, time_vin_alg, label = "Алгоритм Винограда")
-    plot2.plot(for_test, time_vin_alg_opt, label="Оптимизированный алгоритм Винограда")
+    plot2.plot(for_test, time_std_alg, label="Стандартный алгоритм")
+    plot2.semilogy()
     plt.legend()
     plt.grid()
     plt.title("Временные характеристики")
@@ -159,6 +160,35 @@ def test_algos():
     plt.xlabel("Размер")
     plt.show()
 
+def memory():
+    for_test = [2, 4, 8, 10, 15, 16, 20, 25, 30, 32, 35, 40, 45, 50, 55, 60, 64]
+    mem_std_alg = []
+    mem_vin_alg = []
+    mem_vin_alg_opt = []
+    mem_sht_alg = []
+
+    for num in for_test:
+        mat_a = get_rand_matrix(num)
+        mat_b = get_rand_matrix(num)
+        print("Progress:", num, "len \r")
+
+        mem_std_alg.append(memory_standart_alg(mat_a, mat_b))
+        mem_vin_alg.append(memory_vinograd_alg(mat_a, mat_b))
+        mem_vin_alg_opt.append(memory_optimized_vinograd_alg(mat_a, mat_b))
+        mem_sht_alg.append(memory_strassen_alg(mat_a, mat_b))
+
+    fig = plt.figure(figsize=(10, 7))
+    plot = fig.add_subplot()
+    plot.plot(for_test, mem_std_alg, label = "Стандартный алгоритм")
+    plot.plot(for_test, mem_vin_alg, label="Алгоритм Винограда")
+    plot.plot(for_test, mem_vin_alg_opt, label="Оптимизированный алгоритм Винограда")
+    plot.plot(for_test, mem_sht_alg, label="Алгоритм Штрассена")
+    plt.legend()
+    plt.grid()
+    plt.title("Характеристики памяти")
+    plt.ylabel("Память")
+    plt.xlabel("Размер")
+    plt.show()
 
 
 def main():
