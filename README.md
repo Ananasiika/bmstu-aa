@@ -24,6 +24,6 @@
 
 **lab_07** - выдано
 
-[**hw**](https://github.com/Ananasiika/bmstu-aa/tree/main/hw) - на проверке
+[**hw**](https://github.com/Ananasiika/bmstu-aa/tree/main/hw) - принято
 
 [**rk**](https://github.com/Ananasiika/bmstu-aa/tree/main/rk) - принято
