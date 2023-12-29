@@ -1,0 +1,166 @@
+\chapter{Технологическая часть}
+
+В данном разделе будут рассмотрены средства реализации, а также представлены листинги линейной и конвейерной орбаботок текста.
+
+\section{Средства реализации}
+В данной работе для реализации был выбран язык программирования $C++$~\cite{cpp-lang}. 
+В текущей лабораторной работе требуется замерить процессорное время для выполняемой программы, а также реализовать принципы многопоточного алгоритма. 
+Все эти инструменты присутствуют в выбранном языке программирования. 
+
+Функции построения графиков были реализованы с использованием языка программирования $Python$~\cite{python-lang}.
+
+Время замерено с помощью \textit{std::chrono::system\_clock::now(...)} --- функции из библиотеки $chrono$~\cite{cpp-lang-chrono}.
+
+
+\section{Реализация алгоритмов}
+
+В листинге \ref{lst:linear_alg} представлена реализация алгоритма линейной обработки текста, а в листингах \ref{lst:par_alg}--\ref{lst:3} --- реализация алгоритма конвейерной обработки текста.
+
+\clearpage
+
+\begin{center}
+    \captionsetup{justification=raggedright,singlelinecheck=off}
+    \begin{lstlisting}[label=lst:linear_alg,caption=Алгоритм линейной обработки текста]
+void parse_linear(int count, std::vector<std::string> filenames, bool is_print)
+{
+	time_now = 0;
+	std::queue<std::string> q1;
+	std::queue<std::string> q2;
+	std::queue<std::vector<std::string>> q3;
+	queues_t queues = {.q1 = q1, .q2 = q2, .q3 = q3};
+	for (int i = 0; i < count; i++)
+	{
+		queues.q1.push(filenames[i]);
+		std::string filename = queues.q1.front();
+		stage1_linear(filename, i + 1, is_print);
+		queues.q1.pop();
+		queues.q2.push(filename);
+		std::string text = queues.q2.front();
+		stage2_linear(filename, i + 1, is_print); // Stage 2
+		queues.q2.pop();
+		queues.q3.push(filename);
+		std::vector<std::string> sentences = queues.q3.front();
+		stage3_linear(filename, i + 1, is_print); // Stage 3
+		queues.q3.pop();
+	}
+}
+\end{lstlisting}
+\end{center}
+
+\clearpage
+
+\begin{center}
+    \captionsetup{justification=raggedright,singlelinecheck=off}
+    \begin{lstlisting}[label=lst:par_alg,caption=Алгоритм конвейерной обработки текста]
+void parse_parallel(int count, std::vector<std::string> filenames, bool is_print)
+{
+	time_now = 0;
+	std::queue<matrix_t> q1;
+	std::queue<matrix_t> q2;
+	std::queue<matrix_t> q3;
+	queues_t queues = {.q1 = q1, .q2 = q2, .q3 = q3};
+	for (int i = 0; i < count; i++)
+	{
+		q1.push(filenames[i]);
+	}
+	std::thread threads[THREADS];
+	threads[0] = std::thread(stage1_parallel, std::ref(q1), std::ref(q2), std::ref(q3), is_print);
+	threads[1] = std::thread(stage2_parallel, std::ref(q1), std::ref(q2), std::ref(q3), is_print);
+	threads[2] = std::thread(stage3_parallel, std::ref(q1), std::ref(q2), std::ref(q3), is_print);
+	for (int i = 0; i < THREADS; i++)
+	{
+		threads[i].join();
+	}
+}
+\end{lstlisting}
+\end{center}
+
+
+\clearpage
+
+
+\begin{center}
+    \captionsetup{justification=raggedright,singlelinecheck=off}
+    \begin{lstlisting}[label=lst:1,caption=Алгоритм запуска 1 потока для чтения текста из файла]
+void stage1_parallel(std::queue<std::string> &q1, std::queue<std__string> &q2, std::queue<std::vector<std::string>> &q3, bool is_print)
+{
+	int task_num = 1;
+	std::mutex m;
+	while(!q1.empty())
+	{      
+		m.lock();
+		std::string filename = q1.front();
+		m.unlock();
+		log(filename, task_num++, 1, read_file, is_print);
+		m.lock();
+		q2.push(filename);
+		q1.pop();
+		m.unlock();
+	}
+}
+\end{lstlisting}
+\end{center}
+\begin{center}
+	\captionsetup{justification=raggedright,singlelinecheck=off}
+	\begin{lstlisting}[label=lst:3,caption=Алгоритм запуска 3 потока для построения деревьев синтаксических зависимостей]
+void stage3_parallel(std::queue<std::string> &q1, std::queue<std::string> &q2, std::queue<std::vector<std::string>> &q3, bool is_print) {
+	int task_num = 1;
+	std::mutex m;
+	do { 
+		m.lock();
+		bool is_q3empty = q3.empty();
+		m.unlock();
+		if (!is_q3empty) {
+			m.lock();
+			std::vector<std::string> sentences = q3.front(); 
+			q3.pop();
+			m.unlock();
+			log(filename, task_num++, 3, tree, is_print);
+		}
+	} while (!q1.empty() || !q2.empty() || !q3.empty());
+}
+	\end{lstlisting}
+\end{center}
+
+\clearpage
+
+\begin{center}
+    \captionsetup{justification=raggedright,singlelinecheck=off}
+    \begin{lstlisting}[label=lst:2,caption=Алгоритм запуска 2 потока для разделения текста на предложения]
+void stage2_parallel(std::queue<std::string> &q1, std::queue<std::string> &q2, std::queue<std::vector<std::string>> &q3, bool is_print)
+{
+	int task_num = 1;
+	std::mutex m;
+	do
+	{   
+		m.lock();
+		bool is_q2empty = q2.empty();
+		m.unlock();
+		if (!is_q2empty)
+		{   
+			m.lock();
+			std::string filename = q2.front();
+			m.unlock();
+			log(filename, task_num++, 2, get_sentences, is_print);
+			m.lock();
+			q3.push(filename);
+			q2.pop();
+			m.unlock();
+		}
+	} while (!q1.empty() || !q2.empty());
+}
+\end{lstlisting}
+\end{center}
+
+\section{Сведения о модулях программы}
+Программа состоит из следующих модулей:
+\begin{itemize}
+	\item \textit{main.cpp} --- файл, содержащий меню программы;
+	\item \textit{conveyor.h} и \textit{conveyor.cpp} --- файлы, содержащие код реализации линейной и конвейерной обработок, а также функции замера времени;
+	\item \textit{graph\_build.py} --- файл, содержащий функции построения графиков для замеров по времени.
+\end{itemize}
+
+
+\section{Вывод}
+
+Были представлены листинги всех алгоритмов линейной и конвейерной обработки текста. Также в данном разделе была приведена информация о выбранных средствах для разработки алгоритмов и сведения о модулях программы.
